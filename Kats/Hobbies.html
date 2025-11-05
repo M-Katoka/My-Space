@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hobbies</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #2f3030; 
+      margin: 0;
+      padding: 0;
+      color: #ecf0f1;
+      background-image: repeating-linear-gradient(
+        45deg,
+        #2f3030,
+        #2f3030 10px,
+        #3a3b3b 10px,
+        #3a3b3b 20px
+      );
+    }
+
+    header {
+      padding: 1rem;
+      background: linear-gradient(135deg, #222, #444);
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      position: relative;
+    }
+
+    .datetime-container {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      text-align: right;
+      font-size: 0.9rem;
+      color: #ecf0f1;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: #f39c12;
+      letter-spacing: 2px;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 2rem;
+      background-color: rgba(30, 30, 30, 0.8);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      color: #f39c12;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-size: 2rem;
+      position: relative;
+    }
+
+    h2::after {
+      content: "";
+      display: block;
+      height: 4px;
+      width: 50px;
+      background-color: #f39c12;
+      margin: 0.5rem auto 0;
+      border-radius: 2px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    li {
+      background-color: #34495e;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s;
+    }
+
+    li:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      background-color: #2980b9;
+    }
+
+    .icon {
+      font-size: 1.5rem;
+      margin-right: 10px;
+    }
+
+    /* Modal styles */
+    #mediaModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    #mediaContent {
+      background: #2f3030;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 90%;
+      max-height: 90%;
+      overflow: auto;
+      text-align: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    #mediaContent img, 
+    #mediaContent video {
+      width: 100%;
+      max-width: 640px;
+      height: auto;
+      max-height: 360px;
+      border-radius: 8px;
+    }
+
+    #closeModal {
+      margin-top: 15px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      background: #e74c3c;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    #closeModal:hover {
+      background: #c0392b;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    #backToHome {
+      display: block;
+      margin: 30px auto 0;
+      padding: 12px 24px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+    }
+
+    #backToHome:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      background: linear-gradient(135deg, #2980b9, #3498db);
+    }
+
+    #bottomRightLogout {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #e74c3c;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      z-index: 10000;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    #bottomRightLogout:hover {
+      background-color: #c0392b;
+      transform: scale(1.05);
+    }
+
+    @media(max-width: 400px){
+      main {
+        padding: 1.5rem;
+      }
+
+      #backToHome {
+        width: 100%;
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logout Button -->
+  <a href="LoginPage.html" id="bottomRightLogout">Logout</a>
+
+  <header>
+    <h1>Personal Hobbies</h1>
+    <div class="datetime-container">
+      <strong>Date:</strong> <span id="date"></span><br>
+      <strong>Time:</strong> <span id="time"></span>
+    </div>
+  </header>
+
+  <main>
+    <h2>Hobby List</h2>
+    <ul>
+      <li data-hobby="reading"><div class="icon">📚</div>Reading Books</li>
+      <li data-hobby="sleeping"><div class="icon">😴</div>Sleeping</li>
+      <li data-hobby="music"><div class="icon">🎵</div>Listening to Music</li>
+      <li data-hobby="moviess"><div class="icon">🧘‍♂️</div>Alone Time</li>
+      <li data-hobby="coding"><div class="icon">💻</div>Programming and Coding</li>
+      <li data-hobby="gaming"><div class="icon">🎮</div>Gaming</li>
+    </ul>
+
+    <!-- Modal for Media -->
+    <div id="mediaModal">
+      <div id="mediaContent">
+        <button id="closeModal">Close</button>
+        <video id="modalVideo" src="" controls muted autoplay style="display:none;"></video>
+        <p id="mediaDescription"></p>
+      </div>
+    </div>
+
+    <!-- Back Button -->
+    <button id="backToHome">Back to Homepage</button>
+  </main>
+
+  <script>
+    const hobbies = {
+      reading: {
+        mediaType: 'video',
+        src: 'Booksss.mp4',
+        description: 'Enjoy reading a wide variety of books, expanding knowledge and imagination.'
+      },
+      sleeping: {
+        mediaType: 'video',
+        src: 'Sleep.mp4',
+        description: 'Relaxing and getting good rest to rejuvenate your mind and body.'
+      },
+      music: {
+        mediaType: 'video',
+        src: 'Music.mp4',
+        description: 'Listening to your favorite tunes to lift your mood.'
+      },
+      moviess: {
+        mediaType: 'video',
+        src: 'Chill.mp4',
+        description: 'Enjoying peaceful time for movies and relaxation.'
+      },
+      coding: {
+        mediaType: 'video',
+        src: 'Coding.mp4',
+        description: 'Coding and creating new software projects.'
+      },
+      gaming: {
+        mediaType: 'video',
+        src: 'Gamingg.mp4',
+        description: 'Playing games to relax and have fun.'
+      }
+    };
+
+    const modal = document.getElementById('mediaModal');
+    const modalVideo = document.getElementById('modalVideo');
+    const mediaDescription = document.getElementById('mediaDescription');
+    const closeBtn = document.getElementById('closeModal');
+
+    document.querySelectorAll('ul li').forEach(item => {
+      const hobbyKey = item.getAttribute('data-hobby');
+
+      item.addEventListener('click', () => {
+        const hobbyData = hobbies[hobbyKey];
+
+        // Reset and stop previous video
+        modalVideo.pause();
+        modalVideo.currentTime = 0;
+        modalVideo.style.display = 'none';
+
+        // Load and play new video
+        if (hobbyData.mediaType === 'video') {
+          modalVideo.src = hobbyData.src;
+          modalVideo.style.display = 'block';
+          modalVideo.load();
+          modalVideo.play();
+        }
+
+        mediaDescription.textContent = hobbyData.description;
+        modal.style.display = 'flex';
+      });
+    });
+
+    // Close modal
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+      modalVideo.pause();
+      modalVideo.currentTime = 0;
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+        modalVideo.pause();
+        modalVideo.currentTime = 0;
+      }
+    });
+
+    // Navigate back to homepage
+    document.getElementById('backToHome').addEventListener('click', () => {
+      window.location.href = 'home.html'; // Replace with your actual home page
+    });
+
+    // Date & Time Display
+    function updateDateTime() {
+      const now = new Date();
+      document.getElementById('date').textContent = now.toLocaleDateString();
+      document.getElementById('time').textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+  </script>
+
+</body>
+</html>

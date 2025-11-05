@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Login</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+
+  /* 3. Gradient animated background (default) */
+  background: linear-gradient(-45deg, #72b2f3, #49494a, #1abc9c, #1642a0, #a61abc);
+  background-size: 400% 400%;
+  animation: gradientBG 7s ease infinite;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  color: #ecf0f1;
+  position: relative;
+}
+
+/* Gradient animation */
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Canvas for animated background (optional, comment out if using your own background) */
+#backgroundCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: -2; /* Behind login container and video */
+}
+
+/* Background Video styling (if used) */
+#backgroundVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2; /* Behind login container */
+}
+
+/* Container */
+#loginContainer {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+  margin-left: 0;
+  margin-right: auto;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  z-index: 1; /* Above background */
+}
+
+/* Form styles */
+h2 {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border: 1px solid #16a085;
+  border-radius: 4px;
+  background: #010f1d;
+  color: #ecf0f1;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: #1abc9c;
+  outline: none;
+}
+
+button[type="button"] {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.error {
+  color: #00df55;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  min-height: 1rem;
+}
+
+.remember-me {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+button[type="submit"] {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  background-color: #1abc9c;
+  color: white;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+button[type="submit"]:hover {
+  background-color: #16a085;
+}
+
+/* Loader overlay styles */
+#loaderOverlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: none; /* Hidden initially */
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #1abc9c;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media(max-width: 500px) {
+  body { padding: 10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Optional: Background Video -->
+<video autoplay muted loop id="backgroundVideo">
+  <source src="Live wallp.mp4" type="video/mp4" />
+  Your browser does not support HTML5 video.
+</video>
+
+
+<canvas id="backgroundCanvas"></canvas>
+
+<!-- Loader overlay -->
+<div id="loaderOverlay">
+  <div class="spinner"></div>
+</div>
+
+<div id="loginContainer">
+  <form id="loginForm" novalidate>
+    <h2>Please, log in</h2>
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" autocomplete="on" />
+    <div id="usernameError" class="error"></div>
+
+    <label for="password">Password:</label>
+    <div style="position: relative;">
+      <input type="password" id="password" name="password" autocomplete="on" style="padding-right: 40px;" />
+      <button type="button" id="togglePassword" aria-label="Show password" title="Show/hide password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;">
+        <!-- Eye icon SVG -->
+        <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ecf0f1" viewBox="0 0 24 24">
+          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12c-2.48 0-4.5-2.02-4.5-4.5S9.52 7.5 12 7.5 16.5 9.52 16.5 12 14.48 16.5 12 16.5zm0-7c-1.38 0-2.5 1.12-2.5 2.5S10.62 14.5 12 14.5 14.5 13.38 14.5 12 13.38 9.5 12 9.5z"/>
+        </svg>
+      </button>
+    </div>
+    <div id="passwordError" class="error"></div>
+
+    <div class="remember-me">
+      <input type="checkbox" id="remember" name="remember" />
+      <label for="remember">Remember Me</label>
+    </div>
+
+    <button type="submit">Login</button>
+  </form>
+</div>
+
+<script>
+  // Toggle password visibility
+  const passwordInput = document.getElementById('password');
+  const toggleBtn = document.getElementById('togglePassword');
+  const eyeIcon = document.getElementById('eyeIcon');
+
+  toggleBtn.addEventListener('click', () => {
+    const isPassword = passwordInput.type === 'password';
+    if (isPassword) {
+      passwordInput.type = 'text';
+      eyeIcon.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12c-2.48 0-4.5-2.02-4.5-4.5S9.52 7.5 12 7.5 16.5 9.52 16.5 12 14.48 16.5 12 16.5zm0-7c-1.38 0-2.5 1.12-2.5 2.5S10.62 14.5 12 14.5 14.5 13.38 14.5 12 13.38 9.5 12 9.5z"/>`;
+    } else {
+      passwordInput.type = 'password';
+      eyeIcon.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12c-2.48 0-4.5-2.02-4.5-4.5S9.52 7.5 12 7.5 16.5 9.52 16.5 12 14.48 16.5 12 16.5zm0-7c-1.38 0-2.5 1.12-2.5 2.5S10.62 14.5 12 14.5 14.5 13.38 14.5 12 13.38 9.5 12 9.5z"/>`;
+    }
+  });
+
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Show loader overlay
+    const loader = document.getElementById('loaderOverlay');
+    loader.style.display = 'flex';
+
+    // Clear previous errors
+    document.getElementById('usernameError').textContent = '';
+    document.getElementById('passwordError').textContent = '';
+
+    // Simulate delay
+    setTimeout(() => {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      let hasError = false;
+
+      // Validate username
+      if (!username) {
+        document.getElementById('usernameError').textContent = 'Username is required.';
+        hasError = true;
+      } else if (username.length < 4) {
+        document.getElementById('usernameError').textContent = 'Username must be at least 4 characters.';
+        hasError = true;
+      }
+
+      // Validate password
+      if (!password) {
+        document.getElementById('passwordError').textContent = 'Password is required.';
+        hasError = true;
+      } else if (password.length < 6) {
+        document.getElementById('passwordError').textContent = 'Password must be at least 6 characters.';
+        hasError = true;
+      }
+
+      // Hide loader
+      loader.style.display = 'none';
+
+      // Redirect if valid
+      if (!hasError) {
+        window.location.href = 'home.html'; // Replace with your actual page
+      }
+    }, 2000);
+  });
+
+
+
+  window.addEventListener('mousemove', function(e) {
+    mouse.x = e.x;
+    mouse.y = e.y;
+  });
+
+  window.addEventListener('resize', function() {
+    resizeCanvas();
+    initParticles();
+  });
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 3 + 1;
+      this.speedX = (Math.random() - 0.5) * 1;
+      this.speedY = (Math.random() - 0.5) * 1;
+    }
+
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+
+      if (this.x < 0 || this.x > canvas.width) this.speedX = -this.speedX;
+      if (this.y < 0 || this.y > canvas.height) this.speedY = -this.speedY;
+
+    }
+  }
+</script>
+</body>
+</html>

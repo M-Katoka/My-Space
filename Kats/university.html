@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>University of Lusaka Campus Life</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #2f3030;
+    color: #ecf0f1;
+    margin: 0; padding: 0;
+  }
+  header, footer {
+    background-color: #222;
+    color: #bdc3c7;
+    text-align: center;
+    padding: 1rem;
+  }
+  main {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 1rem;
+  }
+  h1 {
+    color: #f39c12;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .gallery {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+  .flip-card {
+    background-color: transparent;
+    width: 180px;
+    height: 240px;
+    perspective: 1000px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+  }
+  .flip-card:hover .flip-card-inner,
+  .flip-card:focus .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+  .flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    backface-visibility: hidden;
+  }
+  .flip-card-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  .flip-card-back {
+    background-color: #16a085;
+    color: #ecf0f1;
+    transform: rotateY(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    font-size: 1rem;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.4);
+  }
+  /* Scrollbar Styling */
+  .gallery::-webkit-scrollbar {
+    height: 8px;
+  }
+  .gallery::-webkit-scrollbar-track {
+    background: #222;
+  }
+  .gallery::-webkit-scrollbar-thumb {
+    background: #f39c12;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>University of Lusaka - Campus Life and School</h1>
+</header>
+
+<main>
+  <div class="gallery" aria-label="University of Lusaka images with descriptions">
+    <div class="flip-card" tabindex="0" aria-describedby="desc1">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img src="campus1.jpg" alt="Main University Building" />
+        </div>
+        <div class="flip-card-back" id="desc1">
+          <p>The iconic Main University Building symbolizes our rich tradition.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card" tabindex="0" aria-describedby="desc2">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img src="library.jpg" alt="University Library" />
+        </div>
+        <div class="flip-card-back" id="desc2">
+          <p>A hub of knowledge and research - the University Library.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card" tabindex="0" aria-describedby="desc3">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img src="sports.jpg" alt="Campus Sports Facilities" />
+        </div>
+        <div class="flip-card-back" id="desc3">
+          <p>Modern sports facilities promote teamwork and health.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card" tabindex="0" aria-describedby="desc4">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img src="student-life.jpg" alt="Students socializing on campus" />
+        </div>
+        <div class="flip-card-back" id="desc4">
+          <p>Vibrant student life creates lifelong friendships and memories.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card" tabindex="0" aria-describedby="desc5">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img src="graduation.jpg" alt="Graduation Ceremony" />
+        </div>
+        <div class="flip-card-back" id="desc5">
+          <p>Celebrating success: Graduation ceremonies mark new beginnings.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>Mwisa Katoka &copy; 2025</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Home Page</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #2f3030; 
+    margin: 0;
+    padding: 0;
+    color: #ecf0f1;
+  }
+
+  /* Fixed bottom right logout button */
+  #bottomRightLogout {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    z-index: 10000;
+    transition: background-color 0.3s;
+  }
+  #bottomRightLogout:hover {
+    background-color: #c0392b;
+  }
+
+  header {
+    padding: 1rem; 
+    background-color: #222; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #welcomeMsg {
+    font-size: 1.2rem; 
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  nav {
+    background-color: #333; display: flex; justify-content: center; padding: 0.5rem 0;
+  }
+
+  nav ul {
+    list-style: none; margin: 0; padding: 0; display: flex;
+  }
+
+  nav li {
+    position: relative;
+  }
+
+  nav a {
+    display: block; padding: 0.75rem 1.5rem; color: #ecf0f1; text-decoration: none; font-weight: bold;
+  }
+
+  nav li:hover {
+    background-color: #444;
+  }
+
+  /* Dropdown styles */
+  .dropdown {
+    display: none; position: absolute; top: 100%; left: 0; background-color: #444; min-width: 180px; z-index: 1000; flex-direction: column;
+  }
+  nav li:hover .dropdown {
+    display: flex;
+  }
+  .dropdown a {
+    padding: 0.75rem 1.5rem;
+  }
+  .dropdown a:hover {
+    background-color: #555;
+  }
+
+  /* Carousel styles */
+  .carousel-container {
+    margin: 1rem auto;
+    max-width: 800px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  .slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+  .slide {
+    min-width: 100%;
+    box-sizing: border-box;
+  }
+  .slide img {
+    width: 100%;
+    display: block;
+    height: 400px;
+    object-fit: cover;
+  }
+
+  /* Dots and controls */
+  .dots {
+    text-align: center;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+  }
+  .dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .dot.active {
+    background-color: #717171;
+  }
+  .prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(44,62,80,0.7);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 1.2rem;
+  }
+  .prev { left: 10px; }
+  .next { right: 10px; }
+
+  /* Main styles */
+  main {
+    max-width: 900px;
+    margin: 20px auto 60px auto;
+    padding: 1rem;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+  }
+
+  h2 {
+    color: #f39c12;
+    margin-bottom: 1rem;
+  }
+  h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #f39c12;
+  }
+
+  /* Year buttons and results */
+  .year-buttons {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .year-button {
+    background-color: #2980b9;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  .year-button:hover {
+    background-color: #3498db;
+  }
+  #results-container {
+    margin-top: 1rem;
+  }
+  .year-results { display: none; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 8px;
+    border: 1px solid #2980b9;
+    text-align: left;
+  }
+  th {
+    background-color: #2980b9;
+    color: #fff;
+  }
+
+  /* Profile */
+  .profile {
+  margin: 1rem auto;
+    max-width: 900px;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    background-color: #1e1e1e;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 6px 20px #123a44(0,0,0,0.4);
+  }
+  .profile img {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+  }
+  .profile div {
+    color: #ecf0f1;
+  }
+
+  /* About Me */
+  .about-bio-container {
+      margin: 1rem auto;
+    max-width: 900px;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    background-color: #1e1e1e;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  .about-me, .my-bio {
+    flex: 1 1 45%;
+    min-width: 100px;
+    background: linear-gradient(135deg, #1e1e1e, #1e1e1e);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    color: #ecf0f1;
+    animation: pulse 3s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 10px #123a44; }
+    50% { box-shadow: 0 0 20px #123a44; }
+  }
+  .about-me h2, .my-bio h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+
+  /* Footer  */
+  footer {
+    background-color: #222;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #bdc3c7;
+    margin-top: 40px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Logout Button -->
+<a href="LoginPage.html" id="bottomRightLogout">Logout</a>
+
+<header>
+  <h1>Hi, Mwisa Katoka</h1>
+  <div style="margin-left: 0.5rem;">
+    <div><strong>Date:</strong> <span id="date"></span></div>
+    <div><strong>Time:</strong> <span id="time"></span></div>
+  </div>
+</header>
+
+<!-- Navigation -->
+<nav>
+  <ul>
+    <li>
+      <a href="#">Academic Results</a>
+      <div class="dropdown">
+        <a href="year1.html">1st Year</a>
+        <a href="year2.html">2nd Year</a>
+        <a href="year3.html">3rd Year</a>
+        <a href="year4.html">4th Year</a>
+      </div>
+    </li>
+    <li><a href="hobbies.html">Hobbies</a></li>
+    <li><a href="Blogs.html">Trending Blogs</a></li>
+  </ul>
+</nav>
+
+<!-- Profile -->
+<div class="profile">
+  <img src="Snapchat-114489185.jpg" alt="Profile Picture" />
+  <div>
+    <h2>Katoka Mwisa</h2>
+    <p>Graduate at the University of Lusaka, who achieved First Class Honors in Computer Science. Achievements include leading multiple projects, winning hackathons, and contributing to open-source communities. I aim to innovate and inspire! 🌟🎯 Currently have wide scaled Knowledge in Cybersecurity, Web Development, System Design among others.</p>
+  </div>
+</div>
+
+
+<!-- Carousel -->
+<div class="carousel-container">
+  <div class="slides" id="slides">
+    <div class="slide"><img src="party.jpg" alt="Tech 1"></div>
+    <div class="slide"><img src="vroooom.jpg" alt="Tech 2"></div>
+    <div class="slide"><img src="produ.jpg" alt="Tech 3"></div>
+    <div class="slide"><img src="tech.jpg" alt="Fun Tech 4"></div>
+  </div>
+  <button class="prev" id="prevBtn">&#10094;</button>
+  <button class="next" id="nextBtn">&#10095;</button>
+  <div class="dots" id="dots"></div>
+</div>
+
+<!-- About Me & My Bio (original side-by-side) -->
+<div class="about-bio-container">
+  <div class="about-me">
+    <h2>About Me</h2>
+    <p>
+      I'm passionate about what i do, starting from fun activities, working hard, programming, and such. When you have me you get a verions of Entertainment.
+    </p>
+  </div>
+</div>
+
+<!-- Current Interests -->
+<section style="max-width:900px; margin:30px auto; padding:20px; background: linear-gradient(135deg, #34495e, #2c3e50); border-radius:12px; color:#ecf0f1; box-shadow:0 6px 20px rgba(0,0,0,0.4);">
+  <h2 style="color:#f39c12; font-size:2rem; margin-bottom:20px; letter-spacing:1.2px; text-align:center;">Daily Routine</h2>
+  <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px;">
+    <!-- Interest 1 -->
+    <div class="interest" style="position:relative; width:150px; height:150px; cursor:pointer; overflow:hidden; border-radius:10px; border:2px solid #2980b9;">
+      <img src="PhotoG.jpg" alt="Interest 1" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">
+      <div style="
+        position:absolute; bottom:0; left:0; right:0; background:rgba(44,62,80,0.8); 
+        color:#fff; padding:10px; border-radius:0 0 10px 10px; display:none; font-size:0.9rem; text-align:center;">
+        <em>"Photographing nature and its creations"</em>
+      </div>
+    </div>
+    <!-- Interest 2 -->
+    <div class="interest" style="position:relative; width:150px; height:150px; cursor:pointer; overflow:hidden; border-radius:10px; border:2px solid #2980b9;">
+      <img src="Gym.jpg" alt="Interest 2" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">
+      <div style="
+        position:absolute; bottom:0; left:0; right:0; background:rgba(44,62,80,0.8); 
+        color:#fff; padding:10px; border-radius:0 0 10px 10px; display:none; font-size:0.9rem; text-align:center;">
+        <em>"Maintaining a healthy mind and body!"</em>
+      </div>
+    </div>
+    <!-- Interest 3 -->
+    <div class="interest" style="position:relative; width:150px; height:150px; cursor:pointer; overflow:hidden; border-radius:10px; border:2px solid #2980b9;">
+      <img src="Tune.jpg" alt="Interest 3" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">
+      <div style="
+        position:absolute; bottom:0; left:0; right:0; background:rgba(44,62,80,0.8); 
+        color:#fff; padding:10px; border-radius:0 0 10px 10px; display:none; font-size:0.9rem; text-align:center;">
+        <em>"Music is my therapy! "</em>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Info (small block) -->
+<div style="max-width:900px; margin:20px auto; padding:10px; background: #222; border-radius:8px; display:flex; justify-content: center; gap: 20px; font-size: 0.9rem; color: #ecf0f1;">
+  <div><strong>Email:</strong> <a href="mailto:your.email@example.com" style="color:#1abc9c; text-decoration:underline;">katokamwisa3@gmail.com</a></div>
+  <div><strong>Phone:</strong> +260-760-2636-82</div>
+  <div><strong>Social:</strong> <a href="https:www.instagram.com/_mwisa_katoka?igsh=MWR2dnEwMmc5OXQ2NA==" target="_blank" style="color:#1abc9c; text-decoration:underline;">Instagram</a></div>
+</div>
+
+<!-- How to navigate video -->
+<div class="video-container" style="max-width:900px; margin:30px auto; padding:20px; background: linear-gradient(135deg, #242525, #2c3e50); border-radius:12px; text-align:center; box-shadow:0 6px 20px rgba(0,0,0,0.4);">
+  <h2 style="margin-bottom:15px;">How to Navigate the Website</h2>
+  <video controls style="max-width:100%; border-radius:8px;">
+    <source src="navigate.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+
+<!-- Footer -->
+<footer>
+  <p>Mwisa Katoka &copy; 2025</p>
+</footer>
+
+<script>
+  // Date & Time
+  function updateDateTime() {
+    const now = new Date();
+    document.getElementById('date').textContent = now.toLocaleDateString();
+    document.getElementById('time').textContent = now.toLocaleTimeString();
+  }
+  setInterval(updateDateTime, 1000);
+  updateDateTime();
+
+  // Carousel
+  const slides = document.getElementById('slides');
+  const slideCount = document.querySelectorAll('.slide').length;
+  const dotsContainer = document.getElementById('dots');
+  let currentSlide = 0;
+  let slideInterval;
+
+  // Create dots
+  for (let i=0; i<slideCount; i++) {
+    const dot = document.createElement('span');
+    dot.className = 'dot' + (i===0 ? ' active' : '');
+    dot.dataset.index = i;
+    dotsContainer.appendChild(dot);
+  }
+  const dots = document.querySelectorAll('.dot');
+
+  function showSlide(index) {
+    if (index >= slideCount) index = 0;
+    if (index < 0) index = slideCount -1;
+    slides.style.transform = `translateX(-${index * 100}%)`;
+    dots.forEach(d => d.classList.remove('active'));
+    dots[index].classList.add('active');
+    currentSlide = index;
+  }
+
+  function nextSlide() { showSlide(currentSlide + 1); }
+  function prevSlide() { showSlide(currentSlide - 1); }
+  function startSlideShow() {
+    slideInterval = setInterval(nextSlide, 3000);
+  }
+  function stopSlideShow() {
+    clearInterval(slideInterval);
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    nextSlide(); stopSlideShow(); startSlideShow();
+  });
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    prevSlide(); stopSlideShow(); startSlideShow();
+  });
+  dots.forEach(d => {
+    d.addEventListener('click', e => {
+      showSlide(parseInt(e.target.dataset.index));
+      stopSlideShow(); startSlideShow();
+    });
+  });
+  startSlideShow();
+
+  // Hover for interest description popups
+  document.querySelectorAll('.interest').forEach(container => {
+    container.addEventListener('mouseenter', () => {
+      container.querySelector('div:nth-child(2)').style.display = 'block';
+    });
+    container.addEventListener('mouseleave', () => {
+      container.querySelector('div:nth-child(2)').style.display = 'none';
+    });
+  });
+
+  // Hover for description popups
+  document.querySelectorAll('.role-model').forEach(container => {
+    container.addEventListener('mouseenter', () => {
+      container.querySelector('div:nth-child(2)').style.display = 'block';
+    });
+    container.addEventListener('mouseleave', () => {
+      container.querySelector('div:nth-child(2)').style.display = 'none';
+    });
+  });
+</script>
+
+</body>
+</html>

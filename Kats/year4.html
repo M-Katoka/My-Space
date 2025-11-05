@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Fourth Year Results</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #2f3030;
+    margin: 0;
+    padding: 0;
+    color: #ecf0f1;
+    background-image: repeating-linear-gradient(
+      45deg,
+      #2f3030,
+      #2f3030 10px,
+      #3a3b3b 10px,
+      #3a3b3b 20px
+    );
+  }
+  header {
+    padding: 1rem;
+    background-color: #222;
+    text-align: center;
+  }
+  h1 {
+    margin: 0;
+  }
+  main {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 1rem;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    animation: slideIn 1s ease-out;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  th, td {
+    padding: 8px;
+    border: 1px solid #2980b9;
+    text-align: left;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  th {
+    background-color: #2980b9;
+    color: #fff;
+  }
+  td:hover {
+    background-color: #34495e;
+    transform: scale(1.02);
+  }
+  a.back-link {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #2980b9;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+  a.back-link:hover {
+    background-color: #3498db;
+  }
+  /* Logout button styling */
+  #bottomRightLogout {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    z-index: 10000;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  #bottomRightLogout:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+  }
+  @keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<a href="LoginPage.html" id="bottomRightLogout">Logout</a>
+
+<header>
+  <h1>Fourth Year Results</h1>
+</header>
+
+<main>
+  <!-- Semester 1 Table -->
+  <h2>Semester 1</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Course</th>
+        <th>Grade</th>
+        <th>Points</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>ICT Project/Research</td>
+        <td>A+</td>
+        <td>5</td>
+      </tr>
+      <tr>
+        <td>Information Technology Law</td>
+        <td>B</td>
+        <td>2</td>
+      </tr>
+      <tr>
+        <td>Information Systems and Society</td>
+        <td>A</td>
+        <td>4</td>
+      </tr>
+      <tr>
+        <td>Strategic Information Systems and Business Policy</td>
+        <td>B+</td>
+        <td>3</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Semester 2 Table -->
+  <h2>Semester 2</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Course</th>
+        <th>Grade</th>
+        <th>Points</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Current Trends in ICT</td>
+        <td>B+</td>
+        <td>3</td>
+      </tr>
+      <tr>
+        <td>ICT Project/Research</td>
+        <td>A+</td>
+        <td>5</td>
+      </tr>
+      <tr>
+        <td>Information Technology Security</td>
+        <td>B</td>
+        <td>2</td>
+      </tr>
+      <tr>
+        <td>System Administration (Linux)</td>
+        <td>A</td>
+        <td>4</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- GPA Calculation -->
+  <div id="gpa-section">Total GPA: <span id="totalGPA"></span></div>
+
+  <a href="home.html" class="back-link">Back to Profile</a>
+</main>
+
+<script>
+  // Data for GPA calculation
+  const results = [
+    { course: "ICT Project/Research", grade: "A+", points: 5 },
+    { course: "Information Technology Law", grade: "B", points: 2 },
+    { course: "Information Systems and Society", grade: "A", points: 4 },
+    { course: "Strategic Information Systems and Business Policy", grade: "B+", points: 3 },
+    { course: "Current Trends in ICT", grade: "B+", points: 3 },
+    { course: "ICT Project/Research", grade: "A+", points: 5 },
+    { course: "Information Technology Security", grade: "B", points: 2 },
+    { course: "System Administration (Linux)", grade: "A", points: 4 },
+  ];
+
+  const totalPoints = results.reduce((sum, r) => sum + r.points, 0);
+  const totalCourses = results.length;
+  const gpa = (totalPoints / totalCourses).toFixed(2);
+  document.getElementById('totalGPA').textContent = gpa;
+</script>
+
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Blogs - Entertainment Page</title>
+<style>
+  /* --- Reset and base styles --- */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #2f3030;
+    margin: 0;
+    padding-top: 70px; /* space for fixed header */
+    color: #ecf0f1;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  body.light {
+    background-color: #f4f4f4;
+    color: #222;
+  }
+
+  /* --- Header styles --- */
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: #222;
+    color: #ecf0f1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-sizing: border-box;
+    z-index: 999;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.7);
+  }
+  body.light header {
+    background-color: #ddd;
+    color: #222;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+  }
+
+  .datetime-container {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    text-align: right;
+    font-size: 0.85rem;
+    color: #ecf0f1;
+  }
+  body.light .datetime-container {
+    color: #222;
+  }
+
+  /* --- Main content styles --- */
+  main {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 1rem;
+  }
+
+  h2 {
+    color: #f39c12;
+    margin-bottom: 1rem;
+    border-bottom: 3px solid #f39c12;
+    padding-bottom: 0.5rem;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+  }
+  body.light h2 {
+    color: #e67e22;
+    border-color: #e67e22;
+  }
+
+  .blog-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+
+  .blog-block {
+    background-color: #34495e;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 300px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  body.light .blog-block {
+    background-color: #e0e0e0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .blog-block img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease, filter 0.3s;
+  }
+
+  .blog-block:hover img {
+    transform: scale(1.1);
+    filter: brightness(1.05);
+  }
+
+  .blog-content {
+    padding: 1rem;
+    flex-grow: 1;
+  }
+  .blog-title {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  .blog-description {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: inherit;
+  }
+
+  @media(max-width: 768px){
+    .blog-section {
+      flex-direction: column;
+      align-items: center;
+    }
+    .blog-block {
+      width: 90%;
+    }
+  }
+
+  /* --- Footer styles --- */
+  footer {
+    background-color: #222;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #bdc3c7;
+    margin-top: 40px;
+  }
+  body.light footer {
+    background-color: #ddd;
+    color: #555;
+  }
+
+  /* --- Fixed bottom right logout button styling --- */
+  #bottomRightLogout {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    z-index: 10000;
+    transition: background-color 0.3s;
+  }
+  #bottomRightLogout:hover {
+    background-color: #c0392b;
+  }
+
+  /* --- Back to Home Link at Bottom --- */
+  #backToHome {
+    display: inline-block;
+    margin: 20px auto 40px;
+    padding: 10px 24px;
+    background-color: #2980b9;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+    transition: background-color 0.3s, box-shadow 0.3s;
+    text-align: center;
+    cursor: pointer;
+  }
+  #backToHome:hover,
+  #backToHome:focus {
+    background-color: #3498db;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.4);
+    outline: none;
+  }
+  body.light #backToHome {
+    background-color: #3498db;
+    color: white;
+  }
+</style>
+</head>
+<body>
+
+<!-- Fixed bottom right logout button -->
+<a href="LoginPage.html" id="bottomRightLogout">Logout</a>
+
+<header>
+  <h1>Entertainment</h1>
+
+  <!-- Date and Time Display -->
+  <div class="datetime-container">
+    <strong>Date:</strong> <span id="date"></span><br>
+    <strong>Time:</strong> <span id="time"></span>
+  </div>
+</header>
+
+<main>
+  <!-- Tech Trends Section -->
+  <section>
+    <h2>Tech Trends</h2>
+    <div class="blog-section">
+      <div class="blog-block">
+        <img src="AI tech.jpg" alt="Artificial Intelligence" />
+        <div class="blog-content">
+          <div class="blog-title">Artificial Intelligence</div>
+          <div class="blog-description">
+            The evolution of AI, year after year.
+          </div>
+        </div>
+      </div>
+      <div class="blog-block">
+        <img src="Ios Samsung.jpg" alt="Tech Gadget" />
+        <div class="blog-content">
+          <div class="blog-title">Apple vs Samsung</div>
+          <div class="blog-description">
+            Let's see who does it best in the phone industry.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cars Section -->
+  <section>
+    <h2>Auto Mobile - Cars</h2>
+    <div class="blog-section">
+      <div class="blog-block">
+        <img src="Speed.jpg" alt="Vrooooom" />
+        <div class="blog-content">
+          <div class="blog-title">Speed? We got it all covered.</div>
+          <div class="blog-description">
+            If you're a speed freak, you need to see this, exactly what you need.
+          </div>
+        </div>
+      </div>
+      <div class="blog-block">
+        <img src="tesla.jpg" alt="Tesla" />
+        <div class="blog-content">
+          <div class="blog-title">Electric Cars</div>
+          <div class="blog-description">
+            An inside look into Tesla and the future of electric vehicles.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Other Stuff Section -->
+  <section>
+    <h2>Other Stuff</h2>
+    <div class="blog-section">
+      <div class="blog-block">
+        <img src="pexels-tima-miroshnichenko-7991486.jpg" alt="Conjuring" />
+        <div class="blog-content">
+          <div class="blog-title">Latest Show</div>
+          <div class="blog-description">
+            A sneak peek into the most anticipated movies in theater this year.
+          </div>
+        </div>
+      </div>
+      <div class="blog-block">
+        <img src="Hoop.jpg" alt="Sports" />
+        <div class="blog-content">
+          <div class="blog-title">Sports</div>
+          <div class="blog-description">
+            All about sports.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Back to Home link at the bottom -->
+  <div style="text-align:center;">
+    <a href="home.html" id="backToHome" tabindex="0">Back to Home</a>
+  </div>
+</main>
+
+<footer>
+  Mwisa Katoka &copy; 2025
+</footer>
+
+<script>
+  // Date and Time updater
+  function updateDateTime() {
+    const now = new Date();
+    document.getElementById('date').textContent = now.toLocaleDateString();
+    document.getElementById('time').textContent = now.toLocaleTimeString();
+  }
+  setInterval(updateDateTime, 1000);
+  updateDateTime();
+</script>
+
+</body>
+</html>
